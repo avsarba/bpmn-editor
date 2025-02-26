@@ -1,0 +1,424 @@
+:root {
+  --editor-bg: #f8f8f8;
+  --sidebar-bg: #f0f0f0;
+  --border-color: #ddd;
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  
+  /* BPMN Colors */
+  --event-color: #e74c3c;
+  --task-color: #3498db;
+  --gateway-color: #f1c40f;
+  --sequence-flow-color: #7f8c8d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.editor-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.palette {
+  width: 70px;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.palette-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.palette-group {
+  margin-bottom: 15px;
+}
+
+.palette-group-title {
+  font-size: 0.7rem;
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+  text-align: center;
+}
+
+.palette-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.palette-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: grab;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  width: 40px;
+  height: 40px;
+}
+
+.palette-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.palette-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.editor-content {
+  flex: 1;
+  position: relative;
+  background-color: var(--editor-bg);
+}
+
+/* Properties Panel Styles */
+.properties-panel {
+  width: 300px;
+  background-color: var(--sidebar-bg);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.properties-panel-header {
+  font-weight: bold;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.properties-content {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.property-group {
+  margin-bottom: 15px;
+}
+
+.property-group-title {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.property-row {
+  margin-bottom: 10px;
+}
+
+.property-label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 3px;
+  color: #555;
+}
+
+.property-input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+.property-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* BPMN Node Styles */
+.react-flow__node {
+  font-size: 12px;
+  color: #222;
+  text-align: center;
+}
+
+/* Task Styles */
+.bpmn-task {
+  width: 120px;
+  height: 80px;
+  background: white;
+  border: 1px solid var(--task-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  position: relative;
+}
+
+.bpmn-task-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.bpmn-task.user-task {
+  border-color: #3498db;
+}
+
+.bpmn-task.service-task {
+  border-color: #9b59b6;
+}
+
+.bpmn-task.script-task {
+  border-color: #2ecc71;
+}
+
+/* Event Styles */
+.bpmn-event {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bpmn-event-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bpmn-event.start-event {
+  border: 2px solid var(--event-color);
+  background: white;
+}
+
+.bpmn-event.end-event {
+  border: 4px solid var(--event-color);
+  background: white;
+}
+
+.bpmn-event.intermediate-event {
+  border: 2px solid var(--event-color);
+  background: white;
+}
+
+.bpmn-event.intermediate-event .bpmn-event-inner {
+  border: 2px solid var(--event-color);
+}
+
+/* Gateway Styles */
+.bpmn-gateway {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border: 1px solid var(--gateway-color);
+  transform: rotate(45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.bpmn-gateway-content {
+  transform: rotate(-45deg);
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+}
+
+.bpmn-gateway.exclusive-gateway .bpmn-gateway-content::after {
+  content: "×";
+}
+
+.bpmn-gateway.parallel-gateway .bpmn-gateway-content::after {
+  content: "+";
+}
+
+.bpmn-gateway.inclusive-gateway .bpmn-gateway-content::after {
+  content: "○";
+}
+
+/* Edge Styles */
+.react-flow__edge-path {
+  stroke: var(--sequence-flow-color);
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--primary-color);
+  stroke-width: 3;
+}
+
+/* Toolbar Styles */
+.toolbar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  display: flex;
+  gap: 5px;
+  background: white;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar button {
+  padding: 5px 10px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  background: #2980b9;
+}
+
+/* BPMN Icons for Palette */
+.bpmn-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.bpmn-icon-task {
+  width: 20px;
+  height: 14px;
+  border: 1px solid var(--task-color);
+  border-radius: 2px;
+  background: white;
+}
+
+.bpmn-icon-user-task {
+  position: relative;
+  width: 20px;
+  height: 14px;
+  border: 1px solid var(--task-color);
+  border-radius: 2px;
+  background: white;
+}
+
+.bpmn-icon-user-task::after {
+  content: "👤";
+  position: absolute;
+  font-size: 8px;
+  right: 1px;
+  bottom: 1px;
+}
+
+.bpmn-icon-service-task {
+  position: relative;
+  width: 20px;
+  height: 14px;
+  border: 1px solid var(--task-color);
+  border-radius: 2px;
+  background: white;
+}
+
+.bpmn-icon-service-task::after {
+  content: "⚙️";
+  position: absolute;
+  font-size: 8px;
+  right: 1px;
+  bottom: 1px;
+}
+
+.bpmn-icon-start-event {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--event-color);
+  border-radius: 50%;
+  background: white;
+}
+
+.bpmn-icon-end-event {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--event-color);
+  border-radius: 50%;
+  background: white;
+}
+
+.bpmn-icon-gateway {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gateway-color);
+  background: white;
+  transform: rotate(45deg);
+}
+
+.bpmn-icon-exclusive-gateway {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gateway-color);
+  background: white;
+  transform: rotate(45deg);
+  position: relative;
+}
+
+.bpmn-icon-exclusive-gateway::after {
+  content: "×";
+  position: absolute;
+  font-size: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.bpmn-icon-parallel-gateway {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--gateway-color);
+  background: white;
+  transform: rotate(45deg);
+  position: relative;
+}
+
+.bpmn-icon-parallel-gateway::after {
+  content: "+";
+  position: absolute;
+  font-size: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
